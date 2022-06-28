@@ -4,6 +4,45 @@ public class Graphe {
     ArrayList<Sommet> sommets=new ArrayList<Sommet>();
     ArrayList<Arete> aretes=new ArrayList<Arete>();
 
+    public void explorer(Graphe g,Sommet s){
+        s.marquer();
+        System.out.println(s.getLabel());
+
+        ArrayList<Sommet> list = new ArrayList<Sommet>();
+        for(Arete a : s.getAretes())
+        {   
+            if(a.getSommet1()!=s){
+                list.add(a.sommet1);
+            }
+            if(a.getSommet2()!=s){
+                list.add(a.sommet2);
+            }
+        }
+
+        for (Sommet sommet : list) {
+            if(sommet.getMarque()==false)
+            {
+                explorer(g, sommet);
+            }
+        }
+    } 
+
+    public void parcours_profondeur(Graphe g,Sommet s){
+        for (Sommet sommet : g.getSommets()) {
+            if(sommet.getMarque()==false){
+                explorer(g, s);
+            }   
+        }
+    }
+
+    public void addSommet(Sommet s)
+    {   
+        this.sommets.add(s);
+    }
+    public Graphe(Boolean b){
+        this.sommets = new ArrayList<>();
+        this.aretes = new ArrayList<>();
+    }
 
     public ArrayList<Sommet> getSommets() {
         return this.sommets;

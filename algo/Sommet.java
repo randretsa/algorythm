@@ -2,11 +2,23 @@ package obj;
 import java.util.ArrayList;
 
 public class Sommet {
+
+    Boolean marque = false;
     public Graphe graphe;
     int label;
     ArrayList<Arete> aretes=new ArrayList<Arete>();
 
-    
+    public void marquer(){
+        this.marque=true;
+    }
+
+    public void setMarque(Boolean b){
+        this.marque = b;
+    }
+    public Boolean getMarque(){
+        return this.marque;
+    } 
+
     public Graphe getGraphe() {
         return this.graphe;
     }
@@ -38,7 +50,7 @@ public class Sommet {
     }
 
     // ajouter une arrête au sommet
-    protected void addArete(Arete a){
+    public void addArete(Arete a){
         aretes.add(a);
     }
 
