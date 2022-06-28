@@ -6,6 +6,9 @@
     -   prendre la valeur minimale de la taille des arrêtes de toutes les sommets d'une graphe
 *   dégré max: 
     -   prendre la valeur maximale de la taille des arrêtes de toutes les sommets d'une graphe
+*   complete
+    -   si dégré min==0    => false
+    -   sinon   true
 *   connexe:
     -   vérifier si toutes les graphes sont liés ou non
     -   existance d'une chemin entre toute paire de noeud
