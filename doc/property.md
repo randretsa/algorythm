@@ -2,17 +2,17 @@
 *   ordre (nb_sommets)
 *   size (nb_arretes)
 
-*   dégré min: 
+*   dégré min: (vita)
     -   prendre la valeur minimale de la taille des arrêtes de toutes les sommets d'une graphe
-*   dégré max: 
+*   dégré max: (vita)
     -   prendre la valeur maximale de la taille des arrêtes de toutes les sommets d'une graphe
-*   complete
+*   complete: (vita)
     -   si dégré min==0    => false
     -   sinon   true
-*   connexe:
+*   connexe: (vita)
     -   vérifier si toutes les graphes sont liés ou non
     -   existance d'une chemin entre toute paire de noeud
-*   densité
+*   densité (vita)
     -   rapport du nombre d'arête sur le nombre total d'arrêtes possibles (0-1)
 *   > planaire:
     -   aucune intersection entre arrêtes

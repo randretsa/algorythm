@@ -54,8 +54,7 @@ public class Main {
         // g.explorer(g, s1);
         g.parcours_profondeur(g, s1);
 
-        for (Sommet s : g.getSommets()) {
-            System.out.println("marque: " + s.getMarque() + " label: "+s.getLabel());
-        }
+        Graphe gr = new Graphe();
+        System.out.println(gr.complete(gr));
     }
 }

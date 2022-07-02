@@ -1,12 +1,57 @@
 package obj;
 import java.util.ArrayList;
+import java.util.Random;
 public class Graphe {
     ArrayList<Sommet> sommets=new ArrayList<Sommet>();
     ArrayList<Arete> aretes=new ArrayList<Arete>();
 
+    //O si complete 1 sinon
+    public int complete(Graphe g){
+        int nb_sommets = g.getSommets().size();
+        int nb_arrete = g.getAretes().size();
+
+        int max=nb_sommets*(nb_sommets-1)/2;
+        
+        System.out.println("combinaiseon: "+max);
+        System.out.println("arrete: "+nb_arrete);
+        if(max==nb_arrete)
+        {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+    //degre min
+    public int degre_min(Graphe g)
+    {
+        int min = Integer.MAX_VALUE;
+
+        for(Sommet s : g.getSommets()){
+            int deg = s.getAretes().size();
+            
+            if(deg<min) min = deg; 
+        }
+
+        return min;
+    } 
+
+    //degre max
+    public int degre_max(Graphe g)
+    {
+        int max = Integer.MIN_VALUE;
+
+        for(Sommet s : g.getSommets()){
+            int deg = s.getAretes().size();
+            
+            if(deg>max) max = deg; 
+        }
+
+        return max;
+    }
+
     public void explorer(Graphe g,Sommet s){
         s.marquer();
-        System.out.println(s.getLabel());
+        //System.out.println(s.getLabel());
 
         ArrayList<Sommet> list = new ArrayList<Sommet>();
         for(Arete a : s.getAretes())
@@ -33,6 +78,20 @@ public class Graphe {
                 explorer(g, s);
             }   
         }
+    }
+
+    //retourne 0 si connexe 1 sinon
+    public int connexe(Graphe g,Sommet s) 
+    {
+        int connexe = 0;
+        parcours_profondeur(g, s);
+        for(Sommet sommet : g.getSommets()){
+            if(sommet.getMarque()==false){
+                connexe = 1;
+            }
+        }
+
+        return connexe;
     }
 
     public void addSommet(Sommet s)
@@ -63,8 +122,9 @@ public class Graphe {
 
     // generate random number
     public static int rand(int min,int max){
-        int n=max-min+1;
-        return (int)(Math.random()*n)+min;
+        Random random = new Random();
+        return random.ints(min, max).findFirst().getAsInt();
+        
     }
 
     // calcul combinaison (m,n)
