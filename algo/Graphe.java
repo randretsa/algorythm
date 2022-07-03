@@ -21,12 +21,27 @@ public class Graphe {
             return 1;
         }
     }
+
+    // déterminer le nombre de dégré pair et impair de chaque sommets
+    // [0]:pair et [1] impair
+    public int[] degre_pairImpair(){
+        int pair=0,impair=0;
+        for(Sommet s : getSommets()){
+            int deg = s.getAretes().size();
+            
+            if(deg%2==0)
+                pair++;
+            else 
+                impair++;
+        }
+        return new int[]{pair,impair};
+    }
     //degre min
-    public int degre_min(Graphe g)
+    public int degre_min()
     {
         int min = Integer.MAX_VALUE;
 
-        for(Sommet s : g.getSommets()){
+        for(Sommet s : getSommets()){
             int deg = s.getAretes().size();
             
             if(deg<min) min = deg; 
@@ -72,10 +87,31 @@ public class Graphe {
         }
     } 
 
+    // https://www.kartable.fr/ressources/mathematiques/methode/determiner-si-un-graphe-admet-une-chaine-eulerienne-ou-un-cycle-eulerien-1/4801
+    // retourne 0 si eulérien 1 sinon
+    public int est_eulerien(){
+        // vérifier si connexe
+        int connexe=connexe();
+
+        if(connexe==1)  //non connexe => non eulérien
+            return 1; 
+
+        // compter le nombre de sommets de dégré impair
+        int impair=degre_pairImpair()[1];
+        // System.out.println("impair: "+impair+" pair: "+degre_pairImpair()[0]);
+
+        if(impair==0 || impair==2)
+            return 0;   //false
+        
+        return 1; //true
+
+    }
+
     public void parcours_profondeur(Graphe g,Sommet s){
         for (Sommet sommet : g.getSommets()) {
             if(sommet.getMarque()==false){
-                explorer(g, s);
+                // modification s->sommet
+                explorer(g, sommet);
             }   
         }
     }
@@ -92,6 +128,10 @@ public class Graphe {
         }
 
         return connexe;
+    }
+    public int connexe() 
+    {
+        return connexe(this,getSommets().get(0));
     }
 
     public void addSommet(Sommet s)
@@ -202,6 +242,10 @@ public class Graphe {
         aretes.add(a);
         sommets.get(i1).addArete(a);
         sommets.get(i2).addArete(a);
+    }
+
+    public void addArete(Arete a){
+        getAretes().add(a);
     }
     private void generer_aretes(){
         int S=nombre_sommets();

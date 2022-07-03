@@ -3,7 +3,19 @@ package obj;
 public class Arete {
     Sommet sommet1;
     Sommet sommet2;
+    Boolean marque=false;
 
+
+    public void marquer(){
+        this.marque=true;
+    }
+
+    public void setMarque(Boolean b){
+        this.marque = b;
+    }
+    public Boolean getMarque(){
+        return this.marque;
+    } 
 
     public Sommet getSommet1() {
         return this.sommet1;
