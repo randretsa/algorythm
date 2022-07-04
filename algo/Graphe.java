@@ -12,8 +12,6 @@ public class Graphe {
 
         int max=nb_sommets*(nb_sommets-1)/2;
         
-        System.out.println("combinaiseon: "+max);
-        System.out.println("arrete: "+nb_arrete);
         if(max==nb_arrete)
         {
             return 0;
