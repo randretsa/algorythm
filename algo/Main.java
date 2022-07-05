@@ -2,6 +2,7 @@ package main;
 import obj.*;
 import java.util.Random;
 import doc.*;
+import file.*;
 public class Main {
     public static void main(String[] args) throws Exception {
         
@@ -60,15 +61,19 @@ public class Main {
         g.addArete(a7);
 
         // g.explorer(g, s1);
-        g.parcours_profondeur(g, s1);
+        // g.parcours_profondeur(g, s1);
+        
+        // Graphe gr = new Graphe();
 
-        Graphe gr = new Graphe();
+        // System.out.println("complete");
+        // System.out.println(gr.complete(gr));
+        // System.out.println("connexe");
+        // System.out.println(g.connexe());
+        // System.out.println("eulerien");
+        // System.out.println(gr.est_eulerien());
+    
+         Csv_generator generator = new Csv_generator();
+         generator.generate_csv();
 
-        System.out.println("complete");
-        System.out.println(g.complete(g));
-        System.out.println("connexe");
-        System.out.println(g.connexe());
-        System.out.println("eulerien");
-        System.out.println(g.est_eulerien());
     }
 }

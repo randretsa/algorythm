@@ -7,18 +7,14 @@ public class Graphe {
 
     //O si complete 1 sinon
     public int complete(Graphe g){
-        int nb_sommets = g.getSommets().size();
-        int nb_arrete = g.getAretes().size();
-
-        int max=nb_sommets*(nb_sommets-1)/2;
         
-        System.out.println("combinaiseon: "+max);
-        System.out.println("arrete: "+nb_arrete);
-        if(max==nb_arrete)
+        int min_size = g.degre_min(g);
+
+        if(min_size==0)
         {
-            return 0;
-        }else{
             return 1;
+        }else{
+            return 0;
         }
     }
 
@@ -37,11 +33,11 @@ public class Graphe {
         return new int[]{pair,impair};
     }
     //degre min
-    public int degre_min()
+    public int degre_min(Graphe g)
     {
         int min = Integer.MAX_VALUE;
 
-        for(Sommet s : getSommets()){
+        for(Sommet s : g.getSommets()){
             int deg = s.getAretes().size();
             
             if(deg<min) min = deg; 
@@ -66,7 +62,7 @@ public class Graphe {
 
     public void explorer(Graphe g,Sommet s){
         s.marquer();
-        //System.out.println(s.getLabel());
+        // System.out.println(s.getLabel());
 
         ArrayList<Sommet> list = new ArrayList<Sommet>();
         for(Arete a : s.getAretes())
@@ -109,10 +105,14 @@ public class Graphe {
 
     public void parcours_profondeur(Graphe g,Sommet s){
         for (Sommet sommet : g.getSommets()) {
+            
+            
             if(sommet.getMarque()==false){
                 // modification s->sommet
                 explorer(g, sommet);
-            }   
+            }
+            
+            
         }
     }
 
@@ -120,8 +120,10 @@ public class Graphe {
     public int connexe(Graphe g,Sommet s) 
     {
         int connexe = 0;
-        parcours_profondeur(g, s);
+        explorer(g, s);
+
         for(Sommet sommet : g.getSommets()){
+            
             if(sommet.getMarque()==false){
                 connexe = 1;
             }
@@ -129,9 +131,10 @@ public class Graphe {
 
         return connexe;
     }
+
     public int connexe() 
     {
-        return connexe(this,getSommets().get(0));
+        return connexe(this,this.getSommets().get(0));
     }
 
     public void addSommet(Sommet s)
@@ -183,7 +186,7 @@ public class Graphe {
 
     // tirer le nombre de sommets
     private int getnb_sommets(){
-        return rand(50,150);
+        return rand(3,10);
     }
 
     // tirer le nombre d'arrêtes
@@ -222,12 +225,27 @@ public class Graphe {
     }
 
     public int[] rand_except(int nb_sommet,ArrayList<Integer[]> exception){
-        int r1=rand(0,nb_sommet-1);
-        int r2=rand_except(0,nb_sommet-1,r1);
+        // int r1=rand(0,nb_sommet-1);
+        // int r2=rand_except(0,nb_sommet-1,r1);
 
-        for (Integer[] i : exception) {
-            if((r1==i[0] && r2==i[1]) || (r1==i[1] && r2==i[0]))
-                return rand_except(nb_sommet,exception);
+        int r1=rand(0,nb_sommet);
+        int r2=rand_except(0,nb_sommet,r1);
+
+        boolean ex=true;
+        while (ex) {
+            boolean e=true;
+            for (Integer[] i : exception) {
+                if((r1==i[0] && r2==i[1]) || (r1==i[1] && r2==i[0])){
+                    r1=rand(0,nb_sommet);
+                    r2=rand_except(0,nb_sommet,r1);
+                    e=false;
+                }
+    
+                // return rand_except(nb_sommet,exception);
+            }
+            if(e)
+                ex=false;
+            
         }
 
         exception.add(new Integer[]{r1,r2});
@@ -240,6 +258,7 @@ public class Graphe {
 
         Arete a=new Arete(sommets.get(i1),sommets.get(i2));
         aretes.add(a);
+
         sommets.get(i1).addArete(a);
         sommets.get(i2).addArete(a);
     }
@@ -251,8 +270,8 @@ public class Graphe {
         int S=nombre_sommets();
         int a=getnb_aretes(S);
 
+        ArrayList<Integer[]> aretes_in=new ArrayList<Integer[]>();
         for (int i = 0; i < a; i++) {
-            ArrayList<Integer[]> aretes_in=new ArrayList<Integer[]>();
             int[] indice_s=rand_except(S,aretes_in);
             add_aretes(indice_s[0],indice_s[1]);
         }
@@ -273,6 +292,5 @@ public class Graphe {
     public Graphe(){
         generer_sommets();
         generer_aretes();
-        
     }
 }
