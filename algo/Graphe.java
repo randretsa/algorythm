@@ -1,14 +1,15 @@
 package obj;
 import java.util.ArrayList;
 import java.util.Random;
+import java.lang.Math;
 public class Graphe {
     ArrayList<Sommet> sommets=new ArrayList<Sommet>();
     ArrayList<Arete> aretes=new ArrayList<Arete>();
 
     //O si complete 1 sinon
-    public int complete(Graphe g){
+    public int complete(){
         
-        int min_size = g.degre_min(g);
+        int min_size = degre_min();
 
         if(min_size==0)
         {
@@ -33,11 +34,11 @@ public class Graphe {
         return new int[]{pair,impair};
     }
     //degre min
-    public int degre_min(Graphe g)
+    public int degre_min()
     {
         int min = Integer.MAX_VALUE;
 
-        for(Sommet s : g.getSommets()){
+        for(Sommet s : getSommets()){
             int deg = s.getAretes().size();
             
             if(deg<min) min = deg; 
@@ -47,11 +48,11 @@ public class Graphe {
     } 
 
     //degre max
-    public int degre_max(Graphe g)
+    public int degre_max()
     {
         int max = Integer.MIN_VALUE;
 
-        for(Sommet s : g.getSommets()){
+        for(Sommet s : getSommets()){
             int deg = s.getAretes().size();
             
             if(deg>max) max = deg; 
@@ -288,9 +289,156 @@ public class Graphe {
         return (double)aretes.size()/total;
     }
 
+    // 0 true, 1 false
+    public int dirac_theorem(){
+        // nombre de sommets
+        int S=(int)Math.ceil(nombre_sommets()/2);
+
+        // vérifier degre_sommet(>S/2)
+        for (Sommet s : sommets) {
+            int degre=s.getAretes().size();
+            if(degre<S)
+                return 1;   //false
+        }
+
+        return 0;   //true
+
+    }
+
+    // prendre les sommets adjacents
+    private Sommet[] sommets_adjacent(Sommet s){
+        ArrayList<Arete> aretes=s.getAretes();
+        Sommet[] adj=new Sommet[aretes.size()];
+
+        int  i=0;
+        for (Arete a : aretes) {
+            if(a.getSommet1()==s)
+                adj[i]=a.getSommet2();
+            else
+                adj[i]=a.getSommet1();
+            i++;
+        }
+        return adj;
+    }
+    // somme des dégré du sommet non adjacent
+    private Sommet[] sommets_nonAdjacent(Sommet sommet){
+        Sommet[] adj=sommets_adjacent(sommet);
+        Sommet[] nonAdj=new Sommet[nombre_sommets()-(adj.length+1)];
+
+        int i=0;
+        for (Sommet s : getSommets()) {
+            if(s!=sommet){
+                boolean bk=false;
+                for (Sommet sAdj : adj) {
+                    if(sAdj==s){
+                        bk=true;
+                        break;
+                    }
+                }
+                if(!bk){
+                    nonAdj[i]=s;
+                    i++;
+                }
+            }
+        }
+        return nonAdj;
+    }
+    // 0 true, 1 false
+    public int ore_theorem(){
+        // parcourir toutes les sommets
+        for (Sommet s : sommets) {
+            Sommet[] nonAdj=sommets_nonAdjacent(s);
+            int degre=s.getAretes().size();
+
+            // System.out.println("somet: "+s.getLabel());
+            for (Sommet sn : nonAdj) {
+                // System.out.println("dAdj: "+(degre+sn.getAretes().size())+" s: "+sn.getLabel());
+                if(degre+sn.getAretes().size()<nombre_sommets())
+                    return 1;
+            }
+            
+        }
+
+        return 0;
+    }
+
+
+    private ArrayList<Sommet> getSommet_inf(int degre){
+        ArrayList<Sommet> liste=new ArrayList<Sommet>();
+        for (Sommet s : sommets) {
+            if(s.getAretes().size()<=degre){
+                liste.add(s);
+            }
+        }
+        return liste;
+
+    }
+    // 0 true, 1 false
+    public int posa_theorem(){
+
+        int ceil=(int)Math.ceil((nombre_sommets()-1)/2);
+        for (int i = 1; i < ceil; i++) {
+            ArrayList<Sommet> liste=getSommet_inf(i);
+            // System.out.println("size: "+liste.size());
+            if(liste.size()>=i)
+                return 1;
+        }
+        
+        ArrayList<Sommet> liste=getSommet_inf(ceil);
+        // System.out.println("SIZE: "+liste.size());
+
+        if(liste.size()>ceil)
+            return 1;
+
+        return 0;
+
+    }
+
+    // 0 true, 1 false
+    public int est_hamiltonien(){
+        int dirac=dirac_theorem();
+        int ore=ore_theorem();
+        int posa=posa_theorem();
+        if(dirac==0 || ore==0 || posa==0)
+            return 0;
+        return 1;
+    }
+
+    // parité ordre
+    public int parite_ordre(){
+        if(nombre_sommets()%2==0)
+            return 0;
+        return 1;
+    }
+
+    // parité size
+    public int parite_size(){
+        if(aretes.size()%2==0)
+            return 0;
+        return 1;
+    }
+
     // générer graphe aléatoire
     public Graphe(){
         generer_sommets();
         generer_aretes();
+    }
+
+    public static Graphe generate_hamiltonien(){
+        Graphe g=new Graphe();
+        if(g.est_hamiltonien()==1){
+            return g.generate_hamiltonien();
+        }
+
+        return g;
+    }
+    
+    public static Graphe generate_nonHamiltonien(){
+        Graphe g=new Graphe();
+        if(g.est_hamiltonien()==0){
+            return g.generate_nonHamiltonien();
+        }
+
+        return g;
     }
 }

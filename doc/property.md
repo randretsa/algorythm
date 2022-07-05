@@ -16,17 +16,19 @@
     -   rapport du nombre d'arête sur le nombre total d'arrêtes possibles (0-1)
 *   eulérien (vita)
 
-*   > planaire:
+<!-- *   > planaire:
     -   aucune intersection entre arrêtes
 *   > diamètre:
     -   distance maximale entre 2 paire de sommets
 *   > maille 
-    -   longueur minimale de ces cycles
+    -   longueur minimale de ces cycles -->
+
+*   parité ordre
+*   parité size
 
 *   théorème Ore
 *   théorème dirack
-*   parité ordre
-*   parité size
+*   théorème posa
 <!-- *   chemin simple/élémentaire -->
 
 

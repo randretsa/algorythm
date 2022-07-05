@@ -1,7 +1,6 @@
 package main;
 import obj.*;
 import java.util.Random;
-import doc.*;
 import file.*;
 public class Main {
     public static void main(String[] args) throws Exception {
