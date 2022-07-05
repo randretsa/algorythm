@@ -14,12 +14,19 @@
     -   existance d'une chemin entre toute paire de noeud
 *   densité (vita)
     -   rapport du nombre d'arête sur le nombre total d'arrêtes possibles (0-1)
+*   eulérien (vita)
+
 *   > planaire:
     -   aucune intersection entre arrêtes
 *   > diamètre:
     -   distance maximale entre 2 paire de sommets
 *   > maille 
     -   longueur minimale de ces cycles
+
+*   théorème Ore
+*   théorème dirack
+*   parité ordre
+*   parité size
 <!-- *   chemin simple/élémentaire -->
 
 
